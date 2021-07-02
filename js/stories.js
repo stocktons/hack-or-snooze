@@ -51,3 +51,27 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+
+/** Create Story instance from user input of author, title, url
+ *    on submit, add entry to API and update story list
+ */
+
+async function submitStory(evt) {
+  evt.preventDefault();
+
+  const author = $("#author-name").val();
+  const title = $("#story-title").val();
+  const url = $("#story-url").val();
+
+  // updates API
+  let newStory = await storyList.addStory(currentUser, { author, title, url });
+
+  // updates local memory
+  storyList.stories.unshift(newStory);
+
+  // updates DOM
+  putStoriesOnPage();
+}
+
+$submitForm.on("submit", submitStory);

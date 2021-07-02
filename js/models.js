@@ -76,11 +76,12 @@ class StoryList {
 
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
+    let { author, title, url } = newStory;
     let response = await axios.post(
-      `${BASE_URL}/stories`, {"token":"PASTE_YOUR_TOKEN_HERE", "story": {"author":"Elie Schoppik","title":"Four Tips for Moving Faster as a Developer", "url": "https://www.rithmschool.com/blog/developer-productivity"} });
+      `${BASE_URL}/stories`, {token : user.loginToken, story : { author, title, url } });
       console.log("response=", response)
     
-    return new Story()  
+    return new Story(response.data);
   }
 }
 
@@ -128,6 +129,8 @@ class User {
       method: "POST",
       data: { user: { username, password, name } },
     });
+
+    let { user } = response.data;
 
     return new User(
       {
