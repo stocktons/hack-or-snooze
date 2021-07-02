@@ -18,6 +18,7 @@ async function getAndShowStoriesOnStart() {
 
 // function that loops over the favorites array from the API and grabs the show IDs and update our class instances of story in storyList
 function checkIfFavorite(story) {
+  if(!currentUser){ return };
   let favoriteIds = currentUser.favorites.map(story => story.storyId);
   return favoriteIds.includes(story.storyId);
 }
@@ -45,7 +46,11 @@ function generateStoryMarkup(story) {
   let isFavorite = checkIfFavorite(story) ? "fas" : "far" ;
   return $(`
       <li id="${story.storyId}">
-        <i class="${isFavorite} fa-star"></i>
+        
+        <span class="star">
+          <i class="${isFavorite} fa-star"></i>
+        </span>
+
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -71,6 +76,20 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+
+/** When a user clicks the favorite star, it should change the star's appearance and 
+ * also call the functions to add or remove the story from the favorites list
+ */
+function toggleStar (evt) {
+    if($(evt.target).attr("class") === "far fa-star") {
+      $(evt.target).attr("class", "fas fa-star");
+    } else if ($(evt.target).attr("class") === "fas fa-star"){
+      $(evt.target).attr("class", "far fa-star");
+    }
+}
+
+$allStoriesList.on("click", $(".star"), toggleStar); // change to include this in toggleFav later
 
 
 /** Create Story instance from user input of author, title, url
