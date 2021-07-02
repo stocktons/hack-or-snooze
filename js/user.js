@@ -26,6 +26,7 @@ async function login(evt) {
   $loginForm.trigger("reset");
 
   saveUserCredentialsInLocalStorage();
+  // call our function that checks for favorites and updates the storiesList
   updateUIOnUserLogin();
 }
 

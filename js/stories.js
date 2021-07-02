@@ -13,6 +13,9 @@ async function getAndShowStoriesOnStart() {
   putStoriesOnPage();
 }
 
+// function that loops over the favorites array from the API and grabs the show IDs and update our class instances of story in storyList
+
+
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story

@@ -20,7 +20,11 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+
+    this.favorite = currentUser.favorites.includes(this.storyId);
   }
+
+  // function for checking if 
 
   /** Parses hostname out of URL and returns it. */
 
