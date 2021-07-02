@@ -8,13 +8,28 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
+  // storyList = {
+  //  stories: [Story, Story, Story Story, Story]
+  // }
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
 }
 
 // function that loops over the favorites array from the API and grabs the show IDs and update our class instances of story in storyList
+function checkIfFavorite(story) {
+  let favoriteIds = currentUser.favorites.map(story => story.storyId);
+  return favoriteIds.includes(story.storyId);
+}
 
+  // listen for click to see if the target is a click
+  // find story of the star that was clicked
+  // add that story to currentUser.favorites
+  // change property isFavorite to true
+  // 
+  // UI: toggleStar = manually update class attr of i element to fas
+
+  
 
 /**
  * A render method to render HTML for an individual Story instance
@@ -27,8 +42,10 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  let isFavorite = checkIfFavorite(story) ? "fas" : "far" ;
   return $(`
       <li id="${story.storyId}">
+        <i class="${isFavorite} fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>

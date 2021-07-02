@@ -13,15 +13,15 @@ class Story {
    *   - {title, author, url, username, storyId, createdAt}
    */
 
-  constructor({ storyId, title, author, url, username, createdAt }) {
+  constructor({ storyId, title, author, url, username, createdAt, isFavorite=false }) {
     this.storyId = storyId;
     this.title = title;
     this.author = author;
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
-
-    this.favorite = currentUser.favorites.includes(this.storyId);
+    this.isFavorite = isFavorite;
+    // this.favorite = currentUser.favorites.includes(this.storyId);
   }
 
   // function for checking if 
@@ -113,7 +113,7 @@ class User {
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
-    this.favorites = favorites.map(s => new Story(s));
+    this.favorites = favorites.map(s => new Story({...s, isFavorite: true}));
     this.ownStories = ownStories.map(s => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.
@@ -203,5 +203,16 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  addFavorite(story) {
+    this.favorites.push(story);
+    axios.post(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { token: currentUser.loginToken });
+  }
+
+  removeFavorite(story) {
+    let favoritesId = this.favorites.map(story => story.storyId);
+    let i = favoritesId.indexOf(story.storyId)
+    this.favorites.splice(i, 1);
   }
 }
