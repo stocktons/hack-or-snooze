@@ -205,14 +205,18 @@ class User {
     }
   }
 
-  addFavorite(story) {
+  /** TODO: comment */
+  async addFavorite(story) {
     this.favorites.push(story);
-    axios.post(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { token: currentUser.loginToken });
+    await axios.post(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { token: currentUser.loginToken });
   }
 
-  removeFavorite(story) {
-    let favoritesId = this.favorites.map(story => story.storyId);
-    let i = favoritesId.indexOf(story.storyId)
-    this.favorites.splice(i, 1);
+  /** TODO: comment */
+  async removeFavorite(story) {
+    // let favoritesId = this.favorites.map(story => story.storyId);
+    // let i = favoritesId.indexOf(story.storyId);
+    // this.favorites.splice(i, 1);
+    this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
+    await axios.delete(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`, { data: {token: currentUser.loginToken} });
   }
 }

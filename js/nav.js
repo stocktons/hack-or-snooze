@@ -47,3 +47,13 @@ function navSubmitClick(evt) {
 }
 
 $navSubmit.on("click", navSubmitClick);
+
+
+function navFavoritesClick(evt) {
+  console.debug("navFavoritesClick", evt);
+  putFavoritesOnPage();
+  hidePageComponents();
+  $favoriteStoriesList.show();
+}
+
+$navFavorites.on("click", navFavoritesClick);

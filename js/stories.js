@@ -77,6 +77,19 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+/** Gets list of favorite stories from server, generates their HTML, puts on favorite page */
+
+function putFavoritesOnPage() {
+  console.debug("putFavoritesOnPage");
+
+  $favoriteStoriesList.empty();
+
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
+}
+
 
 /** When a user clicks the favorite star, it should change the star's appearance and 
  * also call the functions to add or remove the story from the favorites list
@@ -89,7 +102,31 @@ function toggleStar (evt) {
     }
 }
 
-$allStoriesList.on("click", $(".star"), toggleStar); // change to include this in toggleFav later
+/** toggles star icon
+ *    retrieves story instance of evt.target
+ *    checks if story is in favorites and adds/removes
+ */
+
+function toggleFavorite(evt) {
+  toggleStar(evt);
+  const targetId = $(evt.target.closest("[id]")).attr("id");
+  let story;
+
+  for (let ele of storyList.stories) {
+    let {storyId} = ele;
+    if (storyId === targetId) {
+      story = ele;
+    }
+  }
+  
+  if (!checkIfFavorite(story)) {
+    currentUser.addFavorite(story);
+  } else {
+    currentUser.removeFavorite(story);
+  }
+}
+
+$allStoriesList.on("click", ".star", toggleFavorite); // change to include this in toggleFav later
 
 
 /** Create Story instance from user input of author, title, url
